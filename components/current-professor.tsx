@@ -47,8 +47,8 @@ export function CurrentProfessor() {
   }
 
   return (
-    <div className="flex items-center gap-2 text-xs text-zinc-600">
-      <span className="rounded-full bg-zinc-100 px-2 py-1 font-medium text-zinc-700">
+    <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-600 min-w-0">
+      <span className="rounded-full bg-zinc-100 px-2.5 py-1.5 font-medium text-zinc-700 truncate max-w-[120px] sm:max-w-[180px]">
         {label}
       </span>
     </div>

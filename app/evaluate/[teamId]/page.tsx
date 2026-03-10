@@ -226,7 +226,7 @@ export default async function EvaluateTeamPage({
   const individualScores = (marks?.individual_scores as any) || {};
 
   return (
-    <form action={saveMarks} className="space-y-6">
+    <form action={saveMarks} className="space-y-5 pb-6">
       <input type="hidden" name="team_id" value={team.id} />
 
       <div className="flex justify-start">
@@ -234,19 +234,19 @@ export default async function EvaluateTeamPage({
           asChild
           variant="outline"
           size="sm"
-          className="cursor-pointer border-zinc-700 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-50"
+          className="min-h-[44px] w-full sm:w-auto cursor-pointer border-zinc-700 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-50 touch-manipulation"
         >
           <Link href="/dashboard">Back to dashboard</Link>
         </Button>
       </div>
 
-      <Card className="bg-zinc-900 text-zinc-50">
-        <CardHeader>
-          <CardTitle className="text-zinc-50">
+      <Card className="bg-zinc-900 text-zinc-50 overflow-hidden">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-zinc-50 text-base sm:text-lg">
             Team Evaluation Sheet (20 marks)
           </CardTitle>
-          <CardDescription className="text-zinc-200">
-            Shared marks recorded once per team. These apply to every student in{" "}
+          <CardDescription className="text-zinc-200 text-sm">
+            Shared marks for{" "}
             <span className="font-semibold text-zinc-50">
               {team.display_name}
             </span>
@@ -255,7 +255,7 @@ export default async function EvaluateTeamPage({
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="team_implementation_quality" className="text-zinc-50">
+            <Label htmlFor="team_implementation_quality" className="text-zinc-50 text-sm">
               Implementation quality{" "}
               <span className="text-xs text-zinc-300">(8)</span>
             </Label>
@@ -267,10 +267,11 @@ export default async function EvaluateTeamPage({
               max={TEAM_MAX.implementation_quality}
               defaultValue={teamScores.implementation_quality ?? ""}
               required
+              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="team_stability_mocking" className="text-zinc-50">
+            <Label htmlFor="team_stability_mocking" className="text-zinc-50 text-sm">
               System stability + mocking{" "}
               <span className="text-xs text-zinc-300">(4)</span>
             </Label>
@@ -282,10 +283,11 @@ export default async function EvaluateTeamPage({
               max={TEAM_MAX.stability_mocking}
               defaultValue={teamScores.stability_mocking ?? ""}
               required
+              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="team_cicd" className="text-zinc-50">
+            <Label htmlFor="team_cicd" className="text-zinc-50 text-sm">
               CI/CD pipeline <span className="text-xs text-zinc-300">(3)</span>
             </Label>
             <Input
@@ -296,10 +298,11 @@ export default async function EvaluateTeamPage({
               max={TEAM_MAX.cicd}
               defaultValue={teamScores.cicd ?? ""}
               required
+              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="team_ux" className="text-zinc-50">
+            <Label htmlFor="team_ux" className="text-zinc-50 text-sm">
               User experience <span className="text-xs text-zinc-300">(2)</span>
             </Label>
             <Input
@@ -310,10 +313,11 @@ export default async function EvaluateTeamPage({
               max={TEAM_MAX.ux}
               defaultValue={teamScores.ux ?? ""}
               required
+              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
             />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="team_docs_arch" className="text-zinc-50">
+            <Label htmlFor="team_docs_arch" className="text-zinc-50 text-sm">
               Documentation + architecture{" "}
               <span className="text-xs text-zinc-300">(3)</span>
             </Label>
@@ -325,19 +329,19 @@ export default async function EvaluateTeamPage({
               max={TEAM_MAX.docs_arch}
               defaultValue={teamScores.docs_arch ?? ""}
               required
+              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
             />
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-zinc-900 text-zinc-50">
-        <CardHeader>
-          <CardTitle className="text-zinc-50">
-            Individual Evaluation Sheet (10 marks per student)
+      <Card className="bg-zinc-900 text-zinc-50 overflow-hidden">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-zinc-50 text-base sm:text-lg">
+            Individual (10 marks per student)
           </CardTitle>
-          <CardDescription className="text-zinc-200">
-            Each student gets marks across four criteria (4 + 2 + 2 + 2). Totals
-            are computed from these values.
+          <CardDescription className="text-zinc-200 text-sm">
+            Four criteria: 4 + 2 + 2 + 2 per student.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -347,8 +351,10 @@ export default async function EvaluateTeamPage({
             max={INDIVIDUAL_MAX}
           />
         </CardContent>
-        <CardFooter className="justify-end gap-3">
-          <Button type="submit">Save all</Button>
+        <CardFooter className="justify-end gap-3 pt-4">
+          <Button type="submit" className="min-h-[48px] px-6 text-base touch-manipulation">
+            Save all
+          </Button>
         </CardFooter>
       </Card>
     </form>

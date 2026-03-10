@@ -19,9 +19,40 @@
   }
 }
 
+/* Safe area for notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Touch-friendly: avoid 300ms delay on tap */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* Minimum touch target on small screens (phones) */
+@media (max-width: 640px) {
+  button:not([class*="min-h-"]):not([class*="h-"]),
+  .min-touch {
+    min-height: 44px;
+  }
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    min-height: 44px;
+    font-size: 16px; /* avoids zoom on focus on iOS */
+  }
 }

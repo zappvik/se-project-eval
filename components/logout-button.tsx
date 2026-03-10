@@ -47,7 +47,7 @@ export function LogoutButton() {
       type="button"
       variant="outline"
       size="icon"
-      className="h-8 w-8 cursor-pointer border-zinc-200 bg-white text-zinc-700 shadow-sm hover:bg-zinc-100 hover:border-zinc-300 hover:shadow-md hover:-translate-y-0.5 transition-transform"
+      className="min-h-[44px] min-w-[44px] h-11 w-11 cursor-pointer border-zinc-200 bg-white text-zinc-700 shadow-sm hover:bg-zinc-100 active:bg-zinc-200 touch-manipulation"
       onClick={handleLogout}
       aria-label="Sign out"
       title="Sign out"

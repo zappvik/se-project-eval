@@ -101,11 +101,11 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="flex w-full justify-center pt-8 sm:pt-12">
+    <div className="flex w-full justify-center px-2 pt-6 pb-8 sm:pt-12">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Change password</CardTitle>
-          <CardDescription>
+        <CardHeader className="space-y-1.5 pb-4">
+          <CardTitle className="text-lg sm:text-xl">Change password</CardTitle>
+          <CardDescription className="text-sm">
             {ready
               ? "Update your password using your current credentials."
               : "Checking your session..."}
@@ -115,7 +115,7 @@ export default function ChangePasswordPage() {
           {ready && (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="current-password">Current password</Label>
+                <Label htmlFor="current-password" className="text-sm">Current password</Label>
                 <Input
                   id="current-password"
                   type="password"
@@ -123,10 +123,11 @@ export default function ChangePasswordPage() {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="Enter your current password"
+                  className="min-h-[44px] text-base touch-manipulation"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="new-password">New password</Label>
+                <Label htmlFor="new-password" className="text-sm">New password</Label>
                 <Input
                   id="new-password"
                   type="password"
@@ -134,10 +135,11 @@ export default function ChangePasswordPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Enter a new password"
+                  className="min-h-[44px] text-base touch-manipulation"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm new password</Label>
+                <Label htmlFor="confirm-password" className="text-sm">Confirm new password</Label>
                 <Input
                   id="confirm-password"
                   type="password"
@@ -145,13 +147,14 @@ export default function ChangePasswordPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter the new password"
+                  className="min-h-[44px] text-base touch-manipulation"
                 />
               </div>
               {error && <p className="text-sm text-red-600">{error}</p>}
               {info && !error && <p className="text-sm text-emerald-700">{info}</p>}
               <Button
                 type="submit"
-                className="w-full cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-transform"
+                className="w-full min-h-[48px] text-base touch-manipulation"
                 disabled={loading}
               >
                 {loading ? "Updating..." : "Update password"}
@@ -159,11 +162,11 @@ export default function ChangePasswordPage() {
             </form>
           )}
         </CardContent>
-        <CardFooter className="flex justify-center">
+        <CardFooter className="flex justify-center pt-2">
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-zinc-600 hover:text-zinc-900"
+            className="min-h-[44px] text-sm text-zinc-600 touch-manipulation"
             onClick={() => router.push("/dashboard")}
           >
             Back to dashboard

@@ -78,40 +78,40 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between gap-2 text-base sm:text-lg">
               <span>Pending evaluation</span>
-              <Badge>{pending.length}</Badge>
+              <Badge className="shrink-0">{pending.length}</Badge>
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Teams that do not yet have marks recorded.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-3">
             {pending.length === 0 && (
               <p className="text-sm text-zinc-500">
                 No pending teams. Great job!
               </p>
             )}
-              {pending.map((team) => (
+            {pending.map((team) => (
               <div
                 key={team.id}
-                className="flex items-center justify-between rounded-md border border-dashed border-zinc-200 bg-white px-3 py-2 text-sm"
+                className="flex flex-col gap-3 rounded-lg border border-dashed border-zinc-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between"
               >
-                <div className="space-y-0.5">
-                  <p className="font-medium text-zinc-900">
+                <div className="min-w-0 space-y-0.5">
+                  <p className="font-medium text-zinc-900 text-sm sm:text-base">
                     {team.display_name}
                   </p>
                   <p className="text-xs text-zinc-500">
                     Level: {team.level}
                   </p>
                   {team.students.length > 0 && (
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-xs text-zinc-500 line-clamp-2 sm:line-clamp-none">
                       {team.students.join(", ")}
                     </p>
                   )}
                 </div>
-                <Button asChild size="sm">
+                <Button asChild size="sm" className="min-h-[44px] w-full sm:w-auto touch-manipulation shrink-0">
                   <Link href={`/evaluate/${team.id}`}>Evaluate</Link>
                 </Button>
               </div>
@@ -120,16 +120,16 @@ export default async function DashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between gap-2 text-base sm:text-lg">
               <span>Completed</span>
-              <Badge variant="outline">{completed.length}</Badge>
+              <Badge variant="outline" className="shrink-0">{completed.length}</Badge>
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Teams with marks saved by any panel member.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-3">
             {completed.length === 0 && (
               <p className="text-sm text-zinc-500">
                 No teams completed yet.
@@ -138,22 +138,22 @@ export default async function DashboardPage() {
             {completed.map((team) => (
               <div
                 key={team.id}
-                className="flex items-center justify-between rounded-md border border-zinc-100 bg-white px-3 py-2 text-sm"
+                className="flex flex-col gap-3 rounded-lg border border-zinc-100 bg-white p-3 sm:flex-row sm:items-center sm:justify-between"
               >
-                <div className="space-y-0.5">
-                  <p className="font-medium text-zinc-900">
+                <div className="min-w-0 space-y-0.5">
+                  <p className="font-medium text-zinc-900 text-sm sm:text-base">
                     {team.display_name}
                   </p>
                   <p className="text-xs text-zinc-500">
                     Level: {team.level}
                   </p>
                   {team.students.length > 0 && (
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-xs text-zinc-500 line-clamp-2 sm:line-clamp-none">
                       {team.students.join(", ")}
                     </p>
                   )}
                 </div>
-                <Button asChild size="sm" variant="outline">
+                <Button asChild size="sm" variant="outline" className="min-h-[44px] w-full sm:w-auto touch-manipulation shrink-0">
                   <Link href={`/evaluate/${team.id}`}>View / Edit</Link>
                 </Button>
               </div>
