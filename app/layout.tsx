@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LogoutButton } from "@/components/logout-button";
 import { CurrentProfessor } from "@/components/current-professor";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,12 @@ export default function RootLayout({
               </div>
               <div className="flex items-center gap-2">
                 <CurrentProfessor />
+                <Link
+                  href="/change-password"
+                  className="rounded-full border border-zinc-200 bg-white px-2 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
+                >
+                  Change password
+                </Link>
                 <LogoutButton />
               </div>
             </header>

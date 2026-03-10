@@ -13,12 +13,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const router = useRouter();
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setInfo(null);
 
     try {
       const supabase = createSupabaseBrowserClient();
@@ -74,6 +75,7 @@ export default function LoginPage() {
               />
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
+            {info && !error && <p className="text-sm text-emerald-700">{info}</p>}
             <Button
               type="submit"
               className="w-full cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-transform"

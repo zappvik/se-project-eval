@@ -9,21 +9,37 @@ export function CurrentProfessor() {
   const [label, setLabel] = useState<string | null>(null);
 
   useEffect(() => {
-    // Never show on login page
     if (pathname === "/login") {
       setLabel(null);
       return;
     }
 
     const supabase = createSupabaseBrowserClient();
-    supabase.auth.getUser().then(({ data }) => {
-      const user = data.user;
-      if (!user) {
+    supabase.auth
+      .getUser()
+      .then(async ({ data }) => {
+        const user = data.user;
+        if (!user) {
+          setLabel(null);
+          return;
+        }
+
+        // Try to load professor profile for a nicer display name.
+        const { data: professor } = await supabase
+          .from("professors")
+          .select("name")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (professor?.name) {
+          setLabel(professor.name);
+        } else {
+          setLabel(user.email ?? null);
+        }
+      })
+      .catch(() => {
         setLabel(null);
-        return;
-      }
-      setLabel(user.email ?? null);
-    });
+      });
   }, [pathname]);
 
   if (!label || pathname === "/login") {
