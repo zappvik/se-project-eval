@@ -138,11 +138,61 @@ async function saveMarks(formData: FormData) {
     }
   }
 
+  // If a record already exists, average with existing marks instead of overwriting
+  const { data: existing } = await supabase
+    .from("marks")
+    .select("team_scores, individual_scores")
+    .eq("team_id", teamId)
+    .maybeSingle();
+
+  let finalTeamScores = teamScores;
+  let finalIndividualScores = individualScores;
+
+  if (existing?.team_scores && existing?.individual_scores) {
+    const existingTeam = existing.team_scores as Record<string, number>;
+    const existingInd = existing.individual_scores as Record<
+      string,
+      { technical_contribution: number; ownership_role: number; engineering_practices: number; understanding: number; total: number }
+    >;
+    const avg = (a: number, b: number) => Math.round(((Number(a) || 0) + (Number(b) || 0)) / 2);
+    finalTeamScores = {
+      implementation_quality: avg(existingTeam.implementation_quality, teamScores.implementation_quality),
+      stability_mocking: avg(existingTeam.stability_mocking, teamScores.stability_mocking),
+      cicd: avg(existingTeam.cicd, teamScores.cicd),
+      ux: avg(existingTeam.ux, teamScores.ux),
+      docs_arch: avg(existingTeam.docs_arch, teamScores.docs_arch),
+    };
+    const studentIds = new Set([...Object.keys(individualScores), ...Object.keys(existingInd)]);
+    finalIndividualScores = {} as typeof individualScores;
+    for (const sid of studentIds) {
+      const cur = individualScores[sid] ?? {
+        technical_contribution: 0,
+        ownership_role: 0,
+        engineering_practices: 0,
+        understanding: 0,
+        total: 0,
+      };
+      const prev = existingInd[sid] ?? cur;
+      finalIndividualScores[sid] = {
+        technical_contribution: avg(prev.technical_contribution, cur.technical_contribution),
+        ownership_role: avg(prev.ownership_role, cur.ownership_role),
+        engineering_practices: avg(prev.engineering_practices, cur.engineering_practices),
+        understanding: avg(prev.understanding, cur.understanding),
+        total: 0,
+      };
+      finalIndividualScores[sid].total =
+        finalIndividualScores[sid].technical_contribution +
+        finalIndividualScores[sid].ownership_role +
+        finalIndividualScores[sid].engineering_practices +
+        finalIndividualScores[sid].understanding;
+    }
+  }
+
   const { error } = await supabase.from("marks").upsert(
     {
       team_id: teamId,
-      team_scores: teamScores,
-      individual_scores: individualScores,
+      team_scores: finalTeamScores,
+      individual_scores: finalIndividualScores,
     },
     { onConflict: "team_id" },
   );
