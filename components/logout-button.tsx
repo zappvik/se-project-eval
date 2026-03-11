@@ -30,8 +30,8 @@ export function LogoutButton() {
     };
   }, []);
 
-  // Hide on login page or when there is no user
-  if (!hasUser || pathname === "/login") {
+  // Hide on login, evaluate page, or when there is no user
+  if (!hasUser || pathname === "/login" || pathname.startsWith("/evaluate/")) {
     return null;
   }
 

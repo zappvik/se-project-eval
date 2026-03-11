@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 export function ChangePasswordLink() {
   const pathname = usePathname();
 
-  // Hide on login page so it only appears when a professor is already in the app
-  if (pathname === "/login") {
+  // Hide on login and evaluate pages
+  if (pathname === "/login" || pathname.startsWith("/evaluate/")) {
     return null;
   }
 
