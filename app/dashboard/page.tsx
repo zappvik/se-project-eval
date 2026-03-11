@@ -159,7 +159,7 @@ export default async function DashboardPage() {
                     </p>
                   )}
                 </div>
-                <Button asChild size="sm" variant="outline" className="min-h-[44px] w-full sm:w-auto touch-manipulation shrink-0">
+                <Button asChild size="sm" className="min-h-[44px] w-full sm:w-auto touch-manipulation shrink-0 bg-indigo-600 text-white hover:bg-indigo-700">
                   <Link href={`/evaluate/${team.id}`}>View / Edit</Link>
                 </Button>
               </div>
