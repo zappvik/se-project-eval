@@ -180,7 +180,7 @@ export function IndividualMarksTable({ students, existingScores, max, teamId, us
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-zinc-300">
-                  Technical contribution ({max.technical_contribution})
+                  Technical contribution [{max.technical_contribution}] (1-3-5)
                 </label>
                 <Input
                   type="number"
@@ -197,7 +197,7 @@ export function IndividualMarksTable({ students, existingScores, max, teamId, us
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-zinc-300">
-                  Ownership of role ({max.ownership_role})
+                  Ownership of role [{max.ownership_role}] (1-2)
                 </label>
                 <Input
                   type="number"
@@ -214,7 +214,7 @@ export function IndividualMarksTable({ students, existingScores, max, teamId, us
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-zinc-300">
-                  Engineering practices ({max.engineering_practices})
+                  Engineering practices [{max.engineering_practices}] (1-2-3)
                 </label>
                 <Input
                   type="number"

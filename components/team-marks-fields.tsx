@@ -82,7 +82,7 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
     <div className="grid gap-4 md:grid-cols-2">
       <div className="space-y-2">
         <Label htmlFor="team_implementation_quality" className="text-zinc-50 text-sm">
-          Implementation quality <span className="text-xs text-zinc-300">(8)</span>
+          Implementation quality <span className="text-xs text-zinc-300">[8] (3-5-8)</span>
         </Label>
         <Input
           id="team_implementation_quality"
@@ -98,7 +98,7 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="team_stability_mocking" className="text-zinc-50 text-sm">
-          System stability + mocking <span className="text-xs text-zinc-300">(4)</span>
+          System stability + mocking <span className="text-xs text-zinc-300">[4] (1-2-4)</span>
         </Label>
         <Input
           id="team_stability_mocking"
@@ -114,7 +114,7 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="team_cicd" className="text-zinc-50 text-sm">
-          CI/CD pipeline <span className="text-xs text-zinc-300">(3)</span>
+          CI/CD pipeline <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
         </Label>
         <Input
           id="team_cicd"
@@ -130,7 +130,7 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="team_ux" className="text-zinc-50 text-sm">
-          User experience <span className="text-xs text-zinc-300">(2)</span>
+          User experience <span className="text-xs text-zinc-300">[2] (1-2)</span>
         </Label>
         <Input
           id="team_ux"
@@ -147,7 +147,7 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
       <div className="space-y-2 md:col-span-2">
         <Label htmlFor="team_docs_arch" className="text-zinc-50 text-sm">
           Documentation + architecture{" "}
-          <span className="text-xs text-zinc-300">(3)</span>
+          <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
         </Label>
         <Input
           id="team_docs_arch"
