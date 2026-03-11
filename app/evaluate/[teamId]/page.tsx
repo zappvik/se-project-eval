@@ -10,7 +10,7 @@ import { IndividualMarksTable } from "../../../components/individual-marks-table
 import { TeamMarksFields } from "@/components/team-marks-fields";
 import Link from "next/link";
 
-const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com"]);
+const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com", "admin@se.dev"]);
 
 type Team = {
   id: string;

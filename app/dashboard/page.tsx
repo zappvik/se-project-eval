@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DashboardToast } from "@/components/dashboard-toast";
 
-const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com"]);
+const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com", "admin@se.dev"]);
 
 type TeamRow = {
   id: string;
