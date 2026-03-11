@@ -53,6 +53,28 @@ async function saveMarks(formData: FormData) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Authorization: ensure this user is allowed to evaluate this team (prevent IDOR)
+  const isAdmin = !!user.email && ADMIN_EMAILS.has(user.email);
+  const { data: professor } = await supabase
+    .from("professors")
+    .select("id")
+    .eq("id", user.id)
+    .single();
+
+  let teamQuery = supabase.from("teams").select("id").eq("id", teamId).maybeSingle();
+  if (professor && !isAdmin) {
+    teamQuery = supabase
+      .from("teams")
+      .select("id")
+      .eq("id", teamId)
+      .contains("faculty_ids", [professor.id])
+      .maybeSingle();
+  }
+  const { data: allowedTeam } = await teamQuery;
+  if (!allowedTeam) {
+    throw new Error("You are not allowed to evaluate this team.");
+  }
+
   const teamScores = {
     implementation_quality: Number(
       formData.get("team_implementation_quality") || 0,
