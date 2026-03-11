@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
+import { SupabaseNotConfigured } from "@/components/supabase-not-configured";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,10 @@ type TeamRow = {
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
+  if (!isSupabaseConfigured()) {
+    return <SupabaseNotConfigured />;
+  }
+
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },

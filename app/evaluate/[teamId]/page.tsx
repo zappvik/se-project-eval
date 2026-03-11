@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
+import { SupabaseNotConfigured } from "@/components/supabase-not-configured";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -210,6 +212,10 @@ export default async function EvaluateTeamPage({
   // In this Next.js version, `params` is passed as a Promise.
   params: Promise<{ teamId: string }>;
 }) {
+  if (!isSupabaseConfigured()) {
+    return <SupabaseNotConfigured />;
+  }
+
   const resolvedParams = await params;
   const supabase = await createSupabaseServerClient();
   const {
