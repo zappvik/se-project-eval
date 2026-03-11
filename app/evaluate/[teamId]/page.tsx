@@ -9,10 +9,7 @@ import { Button } from "@/components/ui/button";
 import { IndividualMarksTable } from "../../../components/individual-marks-table";
 import Link from "next/link";
 
-const ADMIN_USER_IDS = new Set<string>([
-  // zappvik@gmail.com
-  "4cce56f1-c809-45ba-a1a7-9193de7ecfd3",
-]);
+const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com"]);
 
 type Team = {
   id: string;
@@ -216,6 +213,8 @@ export default async function EvaluateTeamPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  const isAdmin = !!user.email && ADMIN_EMAILS.has(user.email);
+
   const teamId = resolvedParams.teamId;
 
   // Mirror the dashboard logic so we only ever try to load
@@ -228,7 +227,7 @@ export default async function EvaluateTeamPage({
 
   let teamQuery = supabase.from("teams").select("*").eq("id", teamId).maybeSingle<Team>();
 
-  if (professor && !ADMIN_USER_IDS.has(user.id)) {
+  if (professor && !isAdmin) {
     // Ensure the team we load is one where this professor is assigned.
     teamQuery = supabase
       .from("teams")
