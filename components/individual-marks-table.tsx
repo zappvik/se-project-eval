@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 
 type Student = {
@@ -27,6 +27,8 @@ type Props = {
   students: Student[];
   existingScores: Record<string, IndividualScore>;
   max: MaxConfig;
+  teamId: string;
+  userId: string;
 };
 
 type RowState = {
@@ -35,7 +37,11 @@ type RowState = {
   engineering_practices: string;
 };
 
-export function IndividualMarksTable({ students, existingScores, max }: Props) {
+export function IndividualMarksTable({ students, existingScores, max, teamId, userId }: Props) {
+  const storageKey = useMemo(
+    () => `se-eval:individual:${teamId}:user:${userId}`,
+    [teamId, userId],
+  );
   const [rows, setRows] = useState<Record<string, RowState>>(() => {
     const initial: Record<string, RowState> = {};
     for (const student of students) {
@@ -55,6 +61,32 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
     }
     return initial;
   });
+
+  // Hydrate from localStorage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Record<string, RowState>;
+      setRows((prev) => ({
+        ...prev,
+        ...parsed,
+      }));
+    } catch {
+      // ignore
+    }
+  }, [storageKey]);
+
+  // Persist current rows to localStorage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(rows));
+    } catch {
+      // ignore
+    }
+  }, [rows, storageKey]);
 
   const handleChange = (
     studentId: string,

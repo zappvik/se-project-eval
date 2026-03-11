@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IndividualMarksTable } from "../../../components/individual-marks-table";
+import { TeamMarksFields } from "@/components/team-marks-fields";
 import Link from "next/link";
 
 const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com"]);
@@ -301,85 +302,13 @@ export default async function EvaluateTeamPage({
             .
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="team_implementation_quality" className="text-zinc-50 text-sm">
-              Implementation quality{" "}
-              <span className="text-xs text-zinc-300">(8)</span>
-            </Label>
-            <Input
-              id="team_implementation_quality"
-              name="team_implementation_quality"
-              type="number"
-              min={0}
-              max={TEAM_MAX.implementation_quality}
-              defaultValue={teamScores.implementation_quality ?? ""}
-              required
-              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="team_stability_mocking" className="text-zinc-50 text-sm">
-              System stability + mocking{" "}
-              <span className="text-xs text-zinc-300">(4)</span>
-            </Label>
-            <Input
-              id="team_stability_mocking"
-              name="team_stability_mocking"
-              type="number"
-              min={0}
-              max={TEAM_MAX.stability_mocking}
-              defaultValue={teamScores.stability_mocking ?? ""}
-              required
-              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="team_cicd" className="text-zinc-50 text-sm">
-              CI/CD pipeline <span className="text-xs text-zinc-300">(3)</span>
-            </Label>
-            <Input
-              id="team_cicd"
-              name="team_cicd"
-              type="number"
-              min={0}
-              max={TEAM_MAX.cicd}
-              defaultValue={teamScores.cicd ?? ""}
-              required
-              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="team_ux" className="text-zinc-50 text-sm">
-              User experience <span className="text-xs text-zinc-300">(2)</span>
-            </Label>
-            <Input
-              id="team_ux"
-              name="team_ux"
-              type="number"
-              min={0}
-              max={TEAM_MAX.ux}
-              defaultValue={teamScores.ux ?? ""}
-              required
-              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-            />
-          </div>
-          <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="team_docs_arch" className="text-zinc-50 text-sm">
-              Documentation + architecture{" "}
-              <span className="text-xs text-zinc-300">(3)</span>
-            </Label>
-            <Input
-              id="team_docs_arch"
-              name="team_docs_arch"
-              type="number"
-              min={0}
-              max={TEAM_MAX.docs_arch}
-              defaultValue={teamScores.docs_arch ?? ""}
-              required
-              className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-            />
-          </div>
+        <CardContent>
+          <TeamMarksFields
+            teamId={team.id}
+            userId={user.id}
+            max={TEAM_MAX}
+            initialScores={teamScores}
+          />
         </CardContent>
       </Card>
 
@@ -397,6 +326,8 @@ export default async function EvaluateTeamPage({
             students={students ?? []}
             existingScores={individualScores}
             max={INDIVIDUAL_MAX}
+            teamId={team.id}
+            userId={user.id}
           />
         </CardContent>
         <CardFooter className="justify-end gap-3 pt-4">
