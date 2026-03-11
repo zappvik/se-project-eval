@@ -13,7 +13,6 @@ type IndividualScore = {
   technical_contribution?: number;
   ownership_role?: number;
   engineering_practices?: number;
-  understanding?: number;
   total?: number;
 };
 
@@ -21,7 +20,6 @@ type MaxConfig = {
   technical_contribution: number;
   ownership_role: number;
   engineering_practices: number;
-  understanding: number;
   total: number;
 };
 
@@ -35,7 +33,6 @@ type RowState = {
   technical_contribution: string;
   ownership_role: string;
   engineering_practices: string;
-  understanding: string;
 };
 
 export function IndividualMarksTable({ students, existingScores, max }: Props) {
@@ -54,8 +51,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
           existing.engineering_practices !== undefined
             ? String(existing.engineering_practices)
             : "",
-        understanding:
-          existing.understanding !== undefined ? String(existing.understanding) : "",
       };
     }
     return initial;
@@ -75,7 +70,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
             technical_contribution: "",
             ownership_role: "",
             engineering_practices: "",
-            understanding: "",
           }),
           [field]: "",
         },
@@ -93,7 +87,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
           technical_contribution: "",
           ownership_role: "",
           engineering_practices: "",
-          understanding: "",
         }),
         [field]: value,
       },
@@ -113,7 +106,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
         row.technical_contribution,
         row.ownership_role,
         row.engineering_practices,
-        row.understanding,
       ];
 
       if (fields.some((v) => v === "" || v === undefined)) {
@@ -139,7 +131,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
           technical_contribution: "",
           ownership_role: "",
           engineering_practices: "",
-          understanding: "",
         };
         const total = totals[student.id];
 
@@ -154,7 +145,7 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
               </p>
               <p className="text-xs text-zinc-400 shrink-0">{student.roll_no}</p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-zinc-300">
                   Technical contribution ({max.technical_contribution})
@@ -205,23 +196,6 @@ export function IndividualMarksTable({ students, existingScores, max }: Props) {
                       "engineering_practices",
                       e.target.value,
                     )
-                  }
-                  required
-                  className="min-h-[44px] text-base bg-zinc-900 border-zinc-600 text-zinc-50 touch-manipulation"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-zinc-300">
-                  Understanding / viva ({max.understanding})
-                </label>
-                <Input
-                  type="number"
-                  min={0}
-                  max={max.understanding}
-                  name={`student__${student.id}__understanding`}
-                  value={row.understanding}
-                  onChange={(e) =>
-                    handleChange(student.id, "understanding", e.target.value)
                   }
                   required
                   className="min-h-[44px] text-base bg-zinc-900 border-zinc-600 text-zinc-50 touch-manipulation"

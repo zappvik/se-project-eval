@@ -9,6 +9,11 @@ import { Button } from "@/components/ui/button";
 import { IndividualMarksTable } from "../../../components/individual-marks-table";
 import Link from "next/link";
 
+const ADMIN_USER_IDS = new Set<string>([
+  // zappvik@gmail.com
+  "4cce56f1-c809-45ba-a1a7-9193de7ecfd3",
+]);
+
 type Team = {
   id: string;
   display_name: string;
@@ -30,10 +35,9 @@ const TEAM_MAX = {
 } as const;
 
 const INDIVIDUAL_MAX = {
-  technical_contribution: 4,
+  technical_contribution: 5,
   ownership_role: 2,
-  engineering_practices: 2,
-  understanding: 2,
+  engineering_practices: 3,
   total: 10,
 } as const;
 
@@ -76,7 +80,6 @@ async function saveMarks(formData: FormData) {
       technical_contribution: number;
       ownership_role: number;
       engineering_practices: number;
-      understanding: number;
       total: number;
     }
   > = {};
@@ -93,7 +96,6 @@ async function saveMarks(formData: FormData) {
         technical_contribution: 0,
         ownership_role: 0,
         engineering_practices: 0,
-        understanding: 0,
         total: 0,
       };
     }
@@ -108,9 +110,6 @@ async function saveMarks(formData: FormData) {
       case "engineering_practices":
         individualScores[studentId].engineering_practices = num;
         break;
-      case "understanding":
-        individualScores[studentId].understanding = num;
-        break;
       default:
         break;
     }
@@ -119,8 +118,7 @@ async function saveMarks(formData: FormData) {
     scores.total =
       scores.technical_contribution +
       scores.ownership_role +
-      scores.engineering_practices +
-      scores.understanding;
+      scores.engineering_practices;
   }
 
   for (const [studentId, scores] of Object.entries(individualScores)) {
@@ -131,8 +129,6 @@ async function saveMarks(formData: FormData) {
       scores.ownership_role > INDIVIDUAL_MAX.ownership_role ||
       scores.engineering_practices < 0 ||
       scores.engineering_practices > INDIVIDUAL_MAX.engineering_practices ||
-      scores.understanding < 0 ||
-      scores.understanding > INDIVIDUAL_MAX.understanding ||
       scores.total < 0 ||
       scores.total > INDIVIDUAL_MAX.total
     ) {
@@ -154,7 +150,7 @@ async function saveMarks(formData: FormData) {
     const existingTeam = existing.team_scores as Record<string, number>;
     const existingInd = existing.individual_scores as Record<
       string,
-      { technical_contribution: number; ownership_role: number; engineering_practices: number; understanding: number; total: number }
+      { technical_contribution?: number; ownership_role?: number; engineering_practices?: number; total?: number }
     >;
     const avg = (a: number, b: number) => Math.round(((Number(a) || 0) + (Number(b) || 0)) / 2);
     finalTeamScores = {
@@ -171,22 +167,19 @@ async function saveMarks(formData: FormData) {
         technical_contribution: 0,
         ownership_role: 0,
         engineering_practices: 0,
-        understanding: 0,
         total: 0,
       };
       const prev = existingInd[sid] ?? cur;
       finalIndividualScores[sid] = {
-        technical_contribution: avg(prev.technical_contribution, cur.technical_contribution),
-        ownership_role: avg(prev.ownership_role, cur.ownership_role),
-        engineering_practices: avg(prev.engineering_practices, cur.engineering_practices),
-        understanding: avg(prev.understanding, cur.understanding),
+        technical_contribution: avg(prev.technical_contribution ?? 0, cur.technical_contribution),
+        ownership_role: avg(prev.ownership_role ?? 0, cur.ownership_role),
+        engineering_practices: avg(prev.engineering_practices ?? 0, cur.engineering_practices),
         total: 0,
       };
       finalIndividualScores[sid].total =
         finalIndividualScores[sid].technical_contribution +
         finalIndividualScores[sid].ownership_role +
-        finalIndividualScores[sid].engineering_practices +
-        finalIndividualScores[sid].understanding;
+        finalIndividualScores[sid].engineering_practices;
     }
   }
 
@@ -235,7 +228,7 @@ export default async function EvaluateTeamPage({
 
   let teamQuery = supabase.from("teams").select("*").eq("id", teamId).maybeSingle<Team>();
 
-  if (professor) {
+  if (professor && !ADMIN_USER_IDS.has(user.id)) {
     // Ensure the team we load is one where this professor is assigned.
     teamQuery = supabase
       .from("teams")
@@ -397,7 +390,7 @@ export default async function EvaluateTeamPage({
             Individual (10 marks per student)
           </CardTitle>
           <CardDescription className="text-zinc-200 text-sm">
-            Four criteria: 4 + 2 + 2 + 2 per student.
+            Three criteria: 5 + 2 + 3 per student.
           </CardDescription>
         </CardHeader>
         <CardContent>

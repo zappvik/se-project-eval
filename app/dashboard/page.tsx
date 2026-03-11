@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DashboardToast } from "@/components/dashboard-toast";
 
+const ADMIN_EMAILS = new Set<string>(["zappvik@gmail.com"]);
+
 type TeamRow = {
   id: string;
   display_name: string;
@@ -32,6 +34,8 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  const isAdmin = !!user.email && ADMIN_EMAILS.has(user.email);
+
   const { data: professor } = await supabase
     .from("professors")
     .select("*")
@@ -48,7 +52,7 @@ export default async function DashboardPage() {
     .select("id, display_name, level, faculty_ids, marks:marks(team_id), students:students(name)")
     .order("display_name", { ascending: true });
 
-  if (professor) {
+  if (professor && !isAdmin) {
     query = query.contains("faculty_ids", [professor.id]);
   }
 
