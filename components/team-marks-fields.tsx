@@ -78,88 +78,121 @@ export function TeamMarksFields({ teamId, userId, max, initialScores }: Props) {
     setScores((prev) => ({ ...prev, [field]: value }));
   };
 
+  const total = useMemo(() => {
+    const values = [
+      scores.implementation_quality,
+      scores.stability_mocking,
+      scores.cicd,
+      scores.ux,
+      scores.docs_arch,
+    ];
+
+    if (values.some((v) => v === "" || v === undefined)) {
+      return null;
+    }
+
+    const nums = values.map((v) => Number(v));
+    if (nums.some((n) => Number.isNaN(n))) {
+      return null;
+    }
+
+    return nums.reduce((sum, n) => sum + n, 0);
+  }, [scores]);
+
+  const maxTotal =
+    max.implementation_quality +
+    max.stability_mocking +
+    max.cicd +
+    max.ux +
+    max.docs_arch;
+
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <div className="space-y-2">
-        <Label htmlFor="team_implementation_quality" className="text-zinc-50 text-sm">
-          Implementation quality <span className="text-xs text-zinc-300">[8] (3-5-8)</span>
-        </Label>
-        <Input
-          id="team_implementation_quality"
-          name="team_implementation_quality"
-          type="number"
-          min={0}
-          max={max.implementation_quality}
-          value={scores.implementation_quality}
-          onChange={(e) => handleChange("implementation_quality", e.target.value)}
-          required
-          className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-        />
+    <div className="space-y-3">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="team_implementation_quality" className="text-zinc-50 text-sm">
+            Implementation quality <span className="text-xs text-zinc-300">[8] (3-5-8)</span>
+          </Label>
+          <Input
+            id="team_implementation_quality"
+            name="team_implementation_quality"
+            type="number"
+            min={0}
+            max={max.implementation_quality}
+            value={scores.implementation_quality}
+            onChange={(e) => handleChange("implementation_quality", e.target.value)}
+            required
+            className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="team_stability_mocking" className="text-zinc-50 text-sm">
+            System stability + mocking <span className="text-xs text-zinc-300">[4] (1-2-4)</span>
+          </Label>
+          <Input
+            id="team_stability_mocking"
+            name="team_stability_mocking"
+            type="number"
+            min={0}
+            max={max.stability_mocking}
+            value={scores.stability_mocking}
+            onChange={(e) => handleChange("stability_mocking", e.target.value)}
+            required
+            className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="team_cicd" className="text-zinc-50 text-sm">
+            CI/CD pipeline <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
+          </Label>
+          <Input
+            id="team_cicd"
+            name="team_cicd"
+            type="number"
+            min={0}
+            max={max.cicd}
+            value={scores.cicd}
+            onChange={(e) => handleChange("cicd", e.target.value)}
+            required
+            className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="team_ux" className="text-zinc-50 text-sm">
+            User experience <span className="text-xs text-zinc-300">[2] (1-2)</span>
+          </Label>
+          <Input
+            id="team_ux"
+            name="team_ux"
+            type="number"
+            min={0}
+            max={max.ux}
+            value={scores.ux}
+            onChange={(e) => handleChange("ux", e.target.value)}
+            required
+            className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
+          />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="team_docs_arch" className="text-zinc-50 text-sm">
+            Documentation + architecture{" "}
+            <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
+          </Label>
+          <Input
+            id="team_docs_arch"
+            name="team_docs_arch"
+            type="number"
+            min={0}
+            max={max.docs_arch}
+            value={scores.docs_arch}
+            onChange={(e) => handleChange("docs_arch", e.target.value)}
+            required
+            className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
+          />
+        </div>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="team_stability_mocking" className="text-zinc-50 text-sm">
-          System stability + mocking <span className="text-xs text-zinc-300">[4] (1-2-4)</span>
-        </Label>
-        <Input
-          id="team_stability_mocking"
-          name="team_stability_mocking"
-          type="number"
-          min={0}
-          max={max.stability_mocking}
-          value={scores.stability_mocking}
-          onChange={(e) => handleChange("stability_mocking", e.target.value)}
-          required
-          className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="team_cicd" className="text-zinc-50 text-sm">
-          CI/CD pipeline <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
-        </Label>
-        <Input
-          id="team_cicd"
-          name="team_cicd"
-          type="number"
-          min={0}
-          max={max.cicd}
-          value={scores.cicd}
-          onChange={(e) => handleChange("cicd", e.target.value)}
-          required
-          className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="team_ux" className="text-zinc-50 text-sm">
-          User experience <span className="text-xs text-zinc-300">[2] (1-2)</span>
-        </Label>
-        <Input
-          id="team_ux"
-          name="team_ux"
-          type="number"
-          min={0}
-          max={max.ux}
-          value={scores.ux}
-          onChange={(e) => handleChange("ux", e.target.value)}
-          required
-          className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-        />
-      </div>
-      <div className="space-y-2 md:col-span-2">
-        <Label htmlFor="team_docs_arch" className="text-zinc-50 text-sm">
-          Documentation + architecture{" "}
-          <span className="text-xs text-zinc-300">[3] (1-2-3)</span>
-        </Label>
-        <Input
-          id="team_docs_arch"
-          name="team_docs_arch"
-          type="number"
-          min={0}
-          max={max.docs_arch}
-          value={scores.docs_arch}
-          onChange={(e) => handleChange("docs_arch", e.target.value)}
-          required
-          className="min-h-[44px] text-base bg-zinc-800 border-zinc-600 text-zinc-50 touch-manipulation"
-        />
+      <div className="pt-1 text-sm font-medium text-zinc-300">
+        Total: <span className="text-zinc-50">{total !== null ? total : "—"}</span> / {maxTotal}
       </div>
     </div>
   );
