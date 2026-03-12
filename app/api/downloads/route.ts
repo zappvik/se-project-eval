@@ -70,14 +70,20 @@ export async function GET(req: NextRequest) {
 
   const rows: string[] = [header];
 
-  for (const team of teams || []) {
-    const teamScores = (Array.isArray(team.marks) ? team.marks[0]?.team_scores : team.marks?.team_scores) as
+  for (const team of (teams as any[] | null) || []) {
+    const marks = (team as any).marks as
+      | { team_scores?: Record<string, number>; individual_scores?: Record<string, any> }[]
+      | { team_scores?: Record<string, number>; individual_scores?: Record<string, any> }
+      | null
+      | undefined;
+
+    const teamScores = (Array.isArray(marks) ? marks[0]?.team_scores : marks?.team_scores) as
       | Record<string, number>
       | null
       | undefined;
-    const individualScores = (Array.isArray(team.marks)
-      ? team.marks[0]?.individual_scores
-      : team.marks?.individual_scores) as
+    const individualScores = (Array.isArray(marks)
+      ? marks[0]?.individual_scores
+      : marks?.individual_scores) as
       | Record<
           string,
           {
