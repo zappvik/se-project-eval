@@ -49,7 +49,7 @@ export default function RootLayout({
                     Faculty portal for panel-based project assessment.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-2 flex-shrink-0 justify-end w-full sm:w-auto">
                   <CurrentProfessor />
                   <ChangePasswordLink />
                   <LogoutButton />

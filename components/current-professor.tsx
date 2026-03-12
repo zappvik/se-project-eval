@@ -9,7 +9,7 @@ export function CurrentProfessor() {
   const [label, setLabel] = useState<string | null>(null);
 
   useEffect(() => {
-    if (pathname === "/login" || pathname.startsWith("/evaluate/")) {
+    if (pathname === "/login" || pathname.startsWith("/evaluate/") || pathname === "/downloads") {
       setLabel(null);
       return;
     }
@@ -42,7 +42,7 @@ export function CurrentProfessor() {
       });
   }, [pathname]);
 
-  if (!label || pathname === "/login" || pathname.startsWith("/evaluate/")) {
+  if (!label || pathname === "/login" || pathname.startsWith("/evaluate/") || pathname === "/downloads") {
     return null;
   }
 

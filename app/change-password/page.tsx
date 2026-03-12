@@ -164,9 +164,7 @@ export default function ChangePasswordPage() {
         </CardContent>
         <CardFooter className="flex justify-center pt-2">
           <Button
-            variant="ghost"
-            size="sm"
-            className="min-h-[44px] text-sm text-zinc-600 touch-manipulation"
+            className="w-full min-h-[48px] text-base touch-manipulation bg-zinc-900 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-50"
             onClick={() => router.push("/dashboard")}
           >
             Back to dashboard

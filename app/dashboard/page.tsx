@@ -75,8 +75,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <DashboardToast />
-      <div className="flex items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-0.5">
           <h2 className="text-lg font-semibold tracking-tight text-zinc-900">
             Assigned Teams
           </h2>
@@ -84,6 +84,14 @@ export default async function DashboardPage() {
             View teams and record shared panel evaluation.
           </p>
         </div>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="min-h-[44px] w-full sm:w-auto cursor-pointer border-zinc-700 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-50 touch-manipulation"
+        >
+          <Link href="/downloads">Downloads</Link>
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">

@@ -31,7 +31,7 @@ export function LogoutButton() {
   }, []);
 
   // Hide on login, evaluate page, or when there is no user
-  if (!hasUser || pathname === "/login" || pathname.startsWith("/evaluate/")) {
+  if (!hasUser || pathname === "/login" || pathname.startsWith("/evaluate/") || pathname === "/downloads") {
     return null;
   }
 
@@ -47,7 +47,7 @@ export function LogoutButton() {
       type="button"
       variant="outline"
       size="icon"
-      className="min-h-[44px] min-w-[44px] h-11 w-11 cursor-pointer border-zinc-200 bg-white text-zinc-700 shadow-sm hover:bg-zinc-100 active:bg-zinc-200 touch-manipulation"
+      className="min-h-[44px] min-w-[44px] h-11 w-11 cursor-pointer border-zinc-700 bg-zinc-900 text-zinc-50 shadow-sm hover:bg-zinc-800 active:bg-zinc-900 touch-manipulation"
       onClick={handleLogout}
       aria-label="Sign out"
       title="Sign out"
@@ -56,7 +56,7 @@ export function LogoutButton() {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        className="h-4 w-4"
+        className="h-4 w-4 text-zinc-50"
         aria-hidden="true"
       >
         <path
