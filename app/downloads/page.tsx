@@ -5,6 +5,7 @@ import { SupabaseNotConfigured } from "@/components/supabase-not-configured";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 const SECTIONS = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
 
@@ -15,6 +16,15 @@ export const dynamic = "force-dynamic";
 export default async function DownloadsPage() {
   if (!isSupabaseConfigured()) {
     return <SupabaseNotConfigured />;
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
   }
 
   return (
