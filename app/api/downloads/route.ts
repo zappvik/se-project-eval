@@ -52,11 +52,9 @@ export async function GET(req: NextRequest) {
     .order("display_name", { ascending: true });
 
   const header = buildCsvRow([
-    "section",
     "roll_no",
     "student_name",
     "team_display_name",
-    "team_level",
     "team_implementation_quality",
     "team_stability_mocking",
     "team_cicd",
@@ -68,7 +66,7 @@ export async function GET(req: NextRequest) {
     "ind_total",
   ]);
 
-  const rows: string[] = [header];
+  const dataRows: { sortKey: number; csv: string }[] = [];
 
   for (const team of (teams as any[] | null) || []) {
     const marks = (team as any).marks as
@@ -96,7 +94,7 @@ export async function GET(req: NextRequest) {
       | null
       | undefined;
 
-    const students = (team.students || []) as {
+    const students = ((team as any).students || []) as {
       id: string;
       name: string | null;
       roll_no: string | null;
@@ -108,12 +106,14 @@ export async function GET(req: NextRequest) {
 
       const sScores = (individualScores && individualScores[student.id]) || {};
 
+      const roll = student.roll_no ?? "";
+      const match = roll.match(/(\d{3})$/);
+      const sortKey = match ? Number(match[1]) || Number.MAX_SAFE_INTEGER : Number.MAX_SAFE_INTEGER;
+
       const row = buildCsvRow([
-        sec,
-        student.roll_no ?? "",
+        roll,
         student.name ?? "",
         team.display_name ?? "",
-        team.level ?? "",
         teamScores?.implementation_quality ?? 0,
         teamScores?.stability_mocking ?? 0,
         teamScores?.cicd ?? 0,
@@ -125,9 +125,13 @@ export async function GET(req: NextRequest) {
         sScores.total ?? 0,
       ]);
 
-      rows.push(row);
+      dataRows.push({ sortKey, csv: row });
     }
   }
+
+  dataRows.sort((a, b) => a.sortKey - b.sortKey);
+
+  const rows: string[] = [header, ...dataRows.map((r) => r.csv)];
 
   const csv = rows.join("\r\n");
   const filename = `se-section-${sectionParam}-marks.csv`;
